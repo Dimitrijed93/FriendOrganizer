@@ -1,0 +1,35 @@
+﻿using FriendOrganizer.Model;
+using FriendOrganizerDataAccess;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace FriendOrganizer.Data
+{
+    public class LookupDataService : ILookupDataService
+    {
+        private Func<FriendOrganizerDBContext> _contextCreator;
+
+        public LookupDataService(Func<FriendOrganizerDBContext> contextCreator)
+        {
+            _contextCreator = contextCreator;
+        }
+
+
+        public async Task<IEnumerable<LookupItem>> GetFriendLookupAsync()
+        {
+            using (var ctx = _contextCreator())
+            {
+                return await ctx.Friends.AsNoTracking().Select(f => new LookupItem
+                {
+                    Id = f.Id,
+                    DisplayMember = f.FirstName + " " + f.LastName
+                }).ToListAsync();
+            }
+        }
+
+    }
+}
