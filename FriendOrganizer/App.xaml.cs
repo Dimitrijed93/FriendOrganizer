@@ -24,5 +24,11 @@ namespace FriendOrganizer
             var mainWindow = container.Resolve<MainWindow>();
             mainWindow.Show();
         }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("Unexpected Error" + Environment.NewLine + e.Exception.Message, "Unexpected Error");
+            e.Handled = true;
+        }
     }
 }

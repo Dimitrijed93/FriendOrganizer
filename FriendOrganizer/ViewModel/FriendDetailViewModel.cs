@@ -1,9 +1,8 @@
 ﻿using FriendOrganizer.Data;
 using FriendOrganizer.Event;
-using FriendOrganizer.Model;
+using FriendOrganizer.Wrapper;
 using Prism.Commands;
 using Prism.Events;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -13,7 +12,9 @@ namespace FriendOrganizer.ViewModel
     {
         private IFriendDataService _dataService;
         private IEventAggregator _eventAggregator;
-        private Friend _friend;
+        private FriendWrapper _friend;
+        public ICommand SaveCommand { get; }
+
 
         public FriendDetailViewModel(IFriendDataService dataService, IEventAggregator eventAggregator)
         {
@@ -25,13 +26,13 @@ namespace FriendOrganizer.ViewModel
 
         private async void OnSaveExecute()
         {
-            await _dataService.SaveAsync(Friend);
+            await _dataService.SaveAsync(Friend.Model);
             _eventAggregator.GetEvent<AfterFriendSavedEvent>().Publish(new AfterFriendSavedEventArgs { Id = Friend.Id, DisplayMember = $"{Friend.FirstName} {Friend.LastName}" });
         }
 
         private bool OnSaveCanExecute()
         {
-            return true;
+            return Friend != null && !Friend.HasErrors;
         }
 
         private async void OnOpenFriendDetailView(int id)
@@ -39,7 +40,7 @@ namespace FriendOrganizer.ViewModel
             await LoadAsync(id);
         }
 
-        public Friend Friend
+        public FriendWrapper Friend
         {
             get { return _friend; }
             private set
@@ -51,9 +52,19 @@ namespace FriendOrganizer.ViewModel
 
         public async Task LoadAsync(int id)
         {
-            Friend = await _dataService.GetByIdAsync(id);
+            var friend = await _dataService.GetByIdAsync(id);
+            Friend = new FriendWrapper(friend);
+            Friend.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Friend.HasErrors))
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            };
+
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+
         }
 
-        public ICommand SaveCommand { get; }
     }
 }
