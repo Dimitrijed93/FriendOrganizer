@@ -1,13 +1,12 @@
 ﻿using FriendOrganizer.Model;
 using FriendOrganizerDataAccess;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FriendOrganizer.Data
+namespace FriendOrganizer.Data.Lookups
 {
     public class LookupDataService : ILookupDataService
     {

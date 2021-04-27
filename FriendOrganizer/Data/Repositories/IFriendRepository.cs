@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FriendOrganizer.Data
+namespace FriendOrganizer.Data.Repositories
 {
-    public interface IFriendDataService
+    public interface IFriendRepository
     {
         Task<List<Friend>> GetAllAsync();
 
         Task<Friend> GetByIdAsync(int id);
 
-        Task SaveAsync(Friend friend);
+        Task SaveAsync();
+
+        bool HasChanges();
 
     }
 }
