@@ -30,5 +30,18 @@ namespace FriendOrganizer.Data.Lookups
             }
         }
 
+
+        public async Task<IEnumerable<LookupItem>> GetProgrammingLanguageLookupAsync()
+        {
+            using (var ctx = _contextCreator())
+            {
+                return await ctx.ProgrammingLanguages.AsNoTracking().Select(f => new LookupItem
+                {
+                    Id = f.Id,
+                    DisplayMember = f.Name
+                }).ToListAsync();
+            }
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace FriendOrganizerDataAccess.Migrations
 {
+    using FriendOrganizer.Model;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,10 +15,12 @@
 
         protected override void Seed(FriendOrganizerDataAccess.FriendOrganizerDBContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
-            //  to avoid creating duplicate seed data.
+            context.ProgrammingLanguages.AddOrUpdate(
+                p => p.Name,
+                new ProgrammingLanguage { Name = "C#" },
+                new ProgrammingLanguage { Name = "Java" },
+                new ProgrammingLanguage { Name = "C++" }
+                );
         }
     }
 }

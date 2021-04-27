@@ -11,6 +11,7 @@ namespace FriendOrganizer.ViewModel
     {
         private ILookupDataService _lookupDataService;
         private IEventAggregator _eventAggregator;
+        private NavigationItemViewModel _selectedFriend;
 
         public ObservableCollection<NavigationItemViewModel> Friends { get; }
 
@@ -19,13 +20,8 @@ namespace FriendOrganizer.ViewModel
             _lookupDataService = lookupDataService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<AfterFriendSavedEvent>().Subscribe(AfterFriendSaved);
+            _eventAggregator.GetEvent<AfterFriendDeletedEvent>().Subscribe(AfterFriendDeleted);
             Friends = new ObservableCollection<NavigationItemViewModel>();
-        }
-
-        private void AfterFriendSaved(AfterFriendSavedEventArgs obj)
-        {
-            var lookupItem = Friends.Single(x => x.Id == obj.Id);
-            lookupItem.DisplayMember = obj.DisplayMember;
         }
 
         public async Task LoadAsync()
@@ -38,8 +34,6 @@ namespace FriendOrganizer.ViewModel
             }
         }
 
-        private NavigationItemViewModel _selectedFriend;
-
         public NavigationItemViewModel SelectedFriend
         {
             get { return _selectedFriend; }
@@ -49,6 +43,29 @@ namespace FriendOrganizer.ViewModel
                 OnPropertyChanged(); 
             }
         }
+
+        private void AfterFriendDeleted(int id)
+        {
+            var friend = Friends.SingleOrDefault(f => f.Id == id);
+            if (friend != null)
+            {
+                Friends.Remove(friend);
+            }
+        }
+
+        private void AfterFriendSaved(AfterFriendSavedEventArgs obj)
+        {
+            var lookupItem = Friends.SingleOrDefault(x => x.Id == obj.Id);
+            if (lookupItem == null)
+            {
+                Friends.Add(new NavigationItemViewModel(obj.Id, obj.DisplayMember, _eventAggregator));
+            }
+            else
+            {
+                lookupItem.DisplayMember = obj.DisplayMember;
+            }
+        }
+
 
     }
 

@@ -56,6 +56,14 @@
     <Compile Include="Migrations\202104270634229_Initial.designer.cs">
       <DependentUpon>202104270634229_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104271316044_AddedProgrammingLanguages.cs" />
+    <Compile Include="Migrations\202104271316044_AddedProgrammingLanguages.designer.cs">
+      <DependentUpon>202104271316044_AddedProgrammingLanguages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104271344242_AddedProgrammingLanguages1.cs" />
+    <Compile Include="Migrations\202104271344242_AddedProgrammingLanguages1.designer.cs">
+      <DependentUpon>202104271344242_AddedProgrammingLanguages1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +80,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202104270634229_Initial.resx">
       <DependentUpon>202104270634229_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104271316044_AddedProgrammingLanguages.resx">
+      <DependentUpon>202104271316044_AddedProgrammingLanguages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104271344242_AddedProgrammingLanguages1.resx">
+      <DependentUpon>202104271344242_AddedProgrammingLanguages1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

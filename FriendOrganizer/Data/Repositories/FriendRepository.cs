@@ -15,6 +15,11 @@ namespace FriendOrganizer.Data.Repositories
             _context = context;
         }
 
+        public void Add(Friend friend)
+        {
+            _context.Friends.Add(friend);
+        }
+
         public async Task<List<Friend>> GetAllAsync()
         {
             return await _context.Friends.ToListAsync();
@@ -28,6 +33,11 @@ namespace FriendOrganizer.Data.Repositories
         public bool HasChanges()
         {
             return _context.ChangeTracker.HasChanges();
+        }
+
+        public void Remove(Friend model)
+        {
+            _context.Friends.Remove(model);
         }
 
         public async Task SaveAsync()

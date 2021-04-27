@@ -7,5 +7,7 @@ namespace FriendOrganizer.Data.Lookups
     public interface ILookupDataService
     {
         Task<IEnumerable<LookupItem>> GetFriendLookupAsync();
+
+        Task<IEnumerable<LookupItem>> GetProgrammingLanguageLookupAsync();
     }
 }
