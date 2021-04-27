@@ -10,5 +10,7 @@ namespace FriendOrganizer.Data
 
         Task<Friend> GetByIdAsync(int id);
 
+        Task SaveAsync(Friend friend);
+
     }
 }
