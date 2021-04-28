@@ -17,5 +17,7 @@ namespace FriendOrganizer.Data.Repositories
         void Add(Friend friend);
 
         void Remove(Friend model);
+
+        void RemovePhoneNumber(FriendPhoneNumber model);
     }
 }
