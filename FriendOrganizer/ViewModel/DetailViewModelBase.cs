@@ -1,6 +1,8 @@
 ﻿using FriendOrganizer.Event;
+using FriendOrganizer.View.Services;
 using Prism.Commands;
 using Prism.Events;
+using System;
 using System.Threading.Tasks;
 
 namespace FriendOrganizer.ViewModel
@@ -11,13 +13,56 @@ namespace FriendOrganizer.ViewModel
 
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand DeleteCommand { get; }
+        public DelegateCommand CloseDetailViewCommand { get; }
+        public IMessageDialogService MessageDialogService { get; }
+
+        private int _id;
+        private string _title;
         protected readonly IEventAggregator EventAggregator;
 
-        public DetailViewModelBase(IEventAggregator eventAggregator)
+
+        public DetailViewModelBase(IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
         {
             EventAggregator = eventAggregator;
+            MessageDialogService = messageDialogService;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute);
+            CloseDetailViewCommand = new DelegateCommand(OnCloseDetailViewExecute);
+        }
+
+        protected virtual void OnCloseDetailViewExecute()
+        {
+            if (HasChanges)
+            {
+                var result = MessageDialogService.ShowOkCancelDialog(
+                    "You've made changes. Close this item?", "Question");
+                if (result == MessageDialogResult.CANCEL)
+                {
+                    return;
+                }
+            }
+            EventAggregator.GetEvent<AfterDetailClosedEvent>()
+                .Publish(new AfterDetailClosedEventArgs
+                {
+                    Id = this.Id,
+                    ViewModelName = this.GetType().Name
+                });
+        }
+
+        public int Id
+        {
+            get { return _id; }
+            protected set { _id = value; }
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            protected set
+            {
+                _title = value;
+                OnPropertyChanged();
+            }
         }
 
         public bool HasChanges
@@ -61,6 +106,6 @@ namespace FriendOrganizer.ViewModel
 
         protected abstract void OnSaveExecute();
 
-        public abstract Task LoadAsync(int? id);
+        public abstract Task LoadAsync(int id);
     }
 }

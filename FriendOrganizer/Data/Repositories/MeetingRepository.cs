@@ -2,6 +2,7 @@
 using FriendOrganizerDataAccess;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FriendOrganizer.Data.Repositories
@@ -20,6 +21,16 @@ namespace FriendOrganizer.Data.Repositories
         public async Task<IEnumerable<Friend>> GetAllFriendsAsync()
         {
             return await Context.Set<Friend>().ToListAsync();
+        }
+
+        public async Task ReloadFriendAsync(int id)
+        {
+            var dbEntity = Context.ChangeTracker.Entries<Friend>()
+                 .SingleOrDefault(db => db.Entity.Id == id);
+            if (dbEntity != null)
+            {
+                await dbEntity.ReloadAsync();
+            }
         }
     }
 }
