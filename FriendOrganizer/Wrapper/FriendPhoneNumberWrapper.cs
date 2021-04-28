@@ -7,9 +7,6 @@ namespace FriendOrganizer.Wrapper
         public FriendPhoneNumberWrapper(FriendPhoneNumber model) : base(model)
         {
         }
-
-        private string _number;
-
         public string Number
         {
             get { return GetValue<string>(); }

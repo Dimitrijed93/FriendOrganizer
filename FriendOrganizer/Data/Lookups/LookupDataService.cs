@@ -43,5 +43,17 @@ namespace FriendOrganizer.Data.Lookups
             }
         }
 
+        public async Task<IEnumerable<LookupItem>> GetMeetingLookupAsync()
+        {
+            using (var ctx = _contextCreator())
+            {
+                return await ctx.Meetings.AsNoTracking().Select(f => new LookupItem
+                {
+                    Id = f.Id,
+                    DisplayMember = f.Title
+                }).ToListAsync();
+            }
+        }
+
     }
 }

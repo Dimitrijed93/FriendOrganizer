@@ -18,8 +18,10 @@ namespace FriendOrganizer.Startup
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<FriendRepository>().As<IFriendRepository>();
-            builder.RegisterType<FriendDetailViewModel>().As<IFriendDetailViewModel>();
+            builder.RegisterType<FriendDetailViewModel>().Keyed<IDetailViewModel>(nameof(FriendDetailViewModel));
+            builder.RegisterType<MeetingDetailViewModel>().Keyed<IDetailViewModel>(nameof(MeetingDetailViewModel));
             builder.RegisterType<LookupDataService>().As<ILookupDataService>();
+            builder.RegisterType<MeetingRepository>().As<IMeetingRepository>();
             builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
             builder.RegisterType<NavigationViewModel>().As<INavigationViewModel>();
             return builder.Build();

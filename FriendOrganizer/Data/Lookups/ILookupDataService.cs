@@ -9,5 +9,8 @@ namespace FriendOrganizer.Data.Lookups
         Task<IEnumerable<LookupItem>> GetFriendLookupAsync();
 
         Task<IEnumerable<LookupItem>> GetProgrammingLanguageLookupAsync();
+
+        Task<IEnumerable<LookupItem>> GetMeetingLookupAsync();
+
     }
 }

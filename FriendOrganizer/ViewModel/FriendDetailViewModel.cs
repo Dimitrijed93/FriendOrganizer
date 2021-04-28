@@ -26,8 +26,6 @@ namespace FriendOrganizer.ViewModel
         public ObservableCollection<LookupItem> ProgrammingLanguages { get; }
         public ObservableCollection<FriendPhoneNumberWrapper> PhoneNumbers { get; }
 
-        private bool _hasChanges;
-
         public FriendDetailViewModel(IFriendRepository dataService,
             IEventAggregator eventAggregator,
             IMessageDialogService messageDialogService,
