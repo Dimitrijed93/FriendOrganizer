@@ -1,6 +1,7 @@
 ﻿using FriendOrganizer.Model;
 using FriendOrganizerDataAccess;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FriendOrganizer.Data.Repositories
@@ -20,6 +21,13 @@ namespace FriendOrganizer.Data.Repositories
         public void RemovePhoneNumber(FriendPhoneNumber model)
         {
             Context.FriendPhoneNumbers.Remove(model);
+        }
+
+        public async Task<bool> HasMeetingsAsync(int id)
+        {
+            return await Context.Meetings.AsNoTracking()
+                .Include(m => m.Friends)
+                .AnyAsync(m => m.Friends.Any(f => f.Id == id));
         }
     }
 }
