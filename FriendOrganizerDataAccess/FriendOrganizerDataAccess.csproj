@@ -82,6 +82,10 @@
     <Compile Include="Migrations\202104280817351_AddedPhoneNumbers1.designer.cs">
       <DependentUpon>202104280817351_AddedPhoneNumbers1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104291226101_RowVersion.cs" />
+    <Compile Include="Migrations\202104291226101_RowVersion.designer.cs">
+      <DependentUpon>202104291226101_RowVersion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104280817351_AddedPhoneNumbers1.resx">
       <DependentUpon>202104280817351_AddedPhoneNumbers1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104291226101_RowVersion.resx">
+      <DependentUpon>202104291226101_RowVersion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

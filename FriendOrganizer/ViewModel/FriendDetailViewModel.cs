@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -91,7 +92,34 @@ namespace FriendOrganizer.ViewModel
 
         protected override async void OnSaveExecute()
         {
-            await _dataService.SaveAsync();
+            try
+            {
+                await _dataService.SaveAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                var dbValue = ex.Entries.Single().GetDatabaseValues();
+                if (dbValue == null)
+                {
+                    MessageDialogService.ShowInfoDialog("The entity has been deleted by another user");
+                    RaiseDetailDeletedEvent(Id);
+                    return;
+                }
+
+                var result = MessageDialogService.ShowOkCancelDialog("The entity has been changed in the meantime by someone else." +
+                    "Click OK to save changes anyway, click Cancel to reload the entity from the database.", "Question");
+                if (result == MessageDialogResult.OK)
+                {
+                    var entry = ex.Entries.Single();
+                    entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                    await _dataService.SaveAsync();
+                } else
+                {
+                    await ex.Entries.Single().ReloadAsync();
+                    await LoadAsync(Friend.Id);
+                }
+
+            }
             HasChanges = _dataService.HasChanges();
             Id = Friend.Id;
             RaiseDetailSavedEvent(Friend.Id, $"{Friend.FirstName} {Friend.LastName}");

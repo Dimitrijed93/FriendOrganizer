@@ -32,7 +32,7 @@
 
             context.FriendPhoneNumbers.AddOrUpdate(
                  pn => pn.Number,
-                 new FriendPhoneNumber { Number = "021222", FriendId = context.Friends.First().Id }
+                 new FriendPhoneNumber { Number = "021222", FriendId = context.Friends.FirstOrDefault().Id }
                  );
             context.Meetings.AddOrUpdate(m => m.Title,
                 new Meeting
@@ -42,8 +42,8 @@
                     DateTo = new DateTime(2018, 5, 26),
                     Friends = new List<Friend>
                     {
-                        context.Friends.Single(f => f.FirstName == "Andreas"),
-                        context.Friends.Single(f => f.FirstName == "Thomas")
+                        context.Friends.SingleOrDefault(f => f.FirstName == "Andreas"),
+                        context.Friends.SingleOrDefault(f => f.FirstName == "Thomas")
                     }
                 });
         }
