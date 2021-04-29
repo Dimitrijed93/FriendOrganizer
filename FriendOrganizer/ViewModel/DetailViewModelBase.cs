@@ -30,6 +30,15 @@ namespace FriendOrganizer.ViewModel
             CloseDetailViewCommand = new DelegateCommand(OnCloseDetailViewExecute);
         }
 
+        protected virtual void RaiseCollectionSavedEvent()
+        {
+            EventAggregator.GetEvent<AfterCollectionSaveEvent>()
+                .Publish(new AfterCollectionSavedArgs
+                {
+                    ViewModelName = this.GetType().Name
+                });
+        }
+
         protected virtual void OnCloseDetailViewExecute()
         {
             if (HasChanges)

@@ -1,5 +1,6 @@
 ﻿using FriendOrganizer.Data.Lookups;
 using FriendOrganizer.Data.Repositories;
+using FriendOrganizer.Event;
 using FriendOrganizer.Model;
 using FriendOrganizer.View.Services;
 using FriendOrganizer.Wrapper;
@@ -33,6 +34,7 @@ namespace FriendOrganizer.ViewModel
         {
             _dataService = dataService;
             _lookupDataService = lookupDataService;
+            eventAggregator.GetEvent<AfterCollectionSaveEvent>().Subscribe(AfterCollectionSaved);
             AddPhoneNumberCommand = new DelegateCommand(OnAddPhoneNumberExecute);
             RemovePhoneNumberCommand = new DelegateCommand(OnRemovePhoneNumberExecute, OnRemovePhoneNumberCanExecute);
 
@@ -204,5 +206,14 @@ namespace FriendOrganizer.ViewModel
             _dataService.Add(friend);
             return friend;
         }
+
+        private async void AfterCollectionSaved(AfterCollectionSavedArgs args)
+        {
+            if (args.ViewModelName == nameof(ProgrammingLanguageDetailViewModel))
+            {
+                await LoadProgrammingLanguagesLookupAsync();
+            }
+        }
+
     }
 }
